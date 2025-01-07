@@ -40,9 +40,9 @@ Below is a summarisation of each file and workings in order to give a clear over
 
 ### Dataset structure
 
-It's git ignored but it's necessary to make the program work. There needs to be the following folder structure in order to work properly:
+It's in the `.gitignore` but this is necessary to make the code work. There needs to be the following directory inside the folder of execution in order to make the code work properly:
 
-- dataset
-  - dataset/alles_20171819_3tracties.csv
-  - dataset/UTRGRID100
-    - dataset/UTRGRID100/(all provided gridfiles)
+- `dataset`
+  - `dataset/alles_20171819_3tracties.csv`
+  - `dataset/UTRGRID100`
+    - `dataset/UTRGRID100/(all provided gridfiles)`
