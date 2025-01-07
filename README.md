@@ -33,3 +33,16 @@ The dataset contains operational data for **three street sweepers** in Utrecht w
 5. **Grid100**: A 100m x 100m grid reference. Shapefiles for this grid are provided in the `UTRGRID100` folder for spatial analysis.
 
 ---
+
+## Implementation
+
+Below is a summarisation of each file and workings in order to give a clear overview for the team on how to work properly with made code.
+
+### Dataset structure
+
+It's git ignored but it's necessary to make the program work. There needs to be the following folder structure in order to work properly:
+
+- dataset
+  - dataset/alles_20171819_3tracties.csv
+  - dataset/UTRGRID100
+    - dataset/UTRGRID100/(all provided gridfiles)
