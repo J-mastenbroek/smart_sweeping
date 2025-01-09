@@ -14,17 +14,17 @@ arbeid_data = csv_data[csv_data['actie'] == 'Arbeid']
 arbeid_data['tijdstip'] = pd.to_datetime(arbeid_data['tijdstip'])
 arbeid_data['date'] = arbeid_data['tijdstip'].dt.date
 
-# Aggregate sweeping activity per day and grid, applying the 300-second threshold
+# Aggregate sweeping activity per day and grid, applying the 60-second threshold
 arbeid_aggregated = arbeid_data.groupby(['date', 'UTRGRID100']).agg({
     'seconde': 'sum'
 }).reset_index()
 
-arbeid_aggregated = arbeid_aggregated[arbeid_aggregated['seconde'] >= 300]  # Exclude grids with less than 300 seconds
+arbeid_aggregated = arbeid_aggregated[arbeid_aggregated['seconde'] >= 60]  
 
-# Load shapefile data
+
 shapefile_path = "dataset/UTRGRID100/UTRGRID100WGS84.shp"
 grid_data = gpd.read_file(shapefile_path)
-grid_data = grid_data.to_crs(epsg=4326)  # Convert to WGS 84 CRS
+grid_data = grid_data.to_crs(epsg=4326)  
 
 # Merge shapefile data with aggregated data
 merged_data = grid_data.merge(arbeid_aggregated, left_on='UTRGRID100', right_on='UTRGRID100')
@@ -34,28 +34,28 @@ colormap = cm.linear.YlOrRd_03.scale(0, merged_data['seconde'].max()).to_step(n=
 colormap.caption = "Daily Sweeping Activity (seconds)"
 
 features = []
-for date in sorted(arbeid_aggregated['date'].unique()):  # Iterate by day
+for date in sorted(arbeid_aggregated['date'].unique()):
     daily_data = merged_data[merged_data['date'] == date]
-
+    
     for _, row in daily_data.iterrows():
-        # Apply color scale based on seconds value
         color = colormap(row['seconde'])
-
         feature = {
             "type": "Feature",
             "geometry": row['geometry'].__geo_interface__,
             "properties": {
-                "time": str(date),
+                # Use a list under "times" so each polygon only appears at that date
+                "times": [str(date)],
                 "seconde": row['seconde'],
                 "style": {
                     "color": color,
-                    "weight": 0.5,  # Grid borders are now more visible
-                    "fillOpacity": 0.8,  # Higher opacity for better grid visibility
-                    "fillColor": color,  # Use the color from the colormap
+                    "weight": 0.5,
+                    "fillOpacity": 0.8,
+                    "fillColor": color
                 },
             },
         }
         features.append(feature)
+
 
 # Save features to GeoJSON file
 with open("daily_features_colored_YlOrRd.geojson", "w") as f:
@@ -64,17 +64,18 @@ with open("daily_features_colored_YlOrRd.geojson", "w") as f:
 # Create the map with adjusted zoom level
 m = folium.Map(location=[52.0907, 5.1214], zoom_start=14, tiles="CartoDB positron")
 
-# Add TimestampedGeoJson with the new features
 TimestampedGeoJson(
     {"type": "FeatureCollection", "features": features},
-    period="P1D",  # Daily intervals
+    period="P1D",
     auto_play=True,
     loop=True,
     max_speed=5,
     loop_button=True,
     date_options="YYYY-MM-DD",
     time_slider_drag_update=True,
+    duration='P1D'
 ).add_to(m)
+
 
 # Add colormap to the map for reference
 colormap.add_to(m)
