@@ -2,3 +2,4 @@ dataset/
 .json
 .geojson
 .html
+.DS_Store
