@@ -3,3 +3,4 @@ dataset/
 .geojson
 .html
 .DS_Store
+.csv
