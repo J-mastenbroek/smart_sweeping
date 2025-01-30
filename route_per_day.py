@@ -9,7 +9,7 @@ from folium.plugins import TimeSliderChoropleth
 import time
 
 # Load the data
-data_file = '/Users/fabianveltkamp/Desktop/daily_hotspot_predictions.csv'
+data_file = 'daily_hotspot_predictions.csv'
 data = pd.read_csv(data_file, low_memory=False)
 
 # Ensure 'datum' is in datetime format

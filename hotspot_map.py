@@ -62,7 +62,7 @@ legend_html = """
             background-color: white; z-index:9999; font-size:14px;
             border:2px solid grey; padding: 10px;">
     <b>Hotspot Categories</b><br>
-    <i style="background: #f7f7f7; width: 10px; height: 10px; display: inline-block;"></i> Low (<20%)<br>
+    <i style="background: #f7fz7f7; width: 10px; height: 10px; display: inline-block;"></i> Low (<20%)<br>
     <i style="background: yellow; width: 10px; height: 10px; display: inline-block;"></i> Moderate (20-50%)<br>
     <i style="background: orange; width: 10px; height: 10px; display: inline-block;"></i> High (50-80%)<br>
     <i style="background: red; width: 10px; height: 10px; display: inline-block;"></i> Very High (>80%)<br>
